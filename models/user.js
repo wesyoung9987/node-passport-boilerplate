@@ -3,8 +3,16 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
 const userSchema = new Schema({
-  email: { type: String, unique: true, lowercase: true },
-  password: String
+  email: { type: String, unique: true, lowercase: true, required: true },
+  password: { type: String, required: true },
+  role: { type: String, required: true },
+  teamId: { type: Schema.Types.ObjectId, ref: 'team' },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  profilePicture: { type: String, default: null },
+},
+{
+    timestamps: true
 });
 
 userSchema.pre('save', function(next) {

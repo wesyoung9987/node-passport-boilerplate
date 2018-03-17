@@ -9,12 +9,24 @@ function tokenForUser(user) {
 
 exports.signin = function(req, res, next) {
   // user was put onto req in passport localLogin
-  res.send({ token: tokenForUser(req.user) });
+  res.send({ token: tokenForUser(req.user), userData: { id: req.user.id, firstName: req.user.firstName, email: req.user.email, role: req.user.role } });
 }
 
 exports.signup = function(req, res, next) {
   const email = req.body.email;
   const password = req.body.password;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const role = req.body.role;
+  console.log(req.body);
+
+  if (!firstName || !lastName) {
+    return res.status(422).send({ error: 'First and last name are required.'});
+  }
+
+  if (!role) {
+    return res.status(422).send({ error: 'User role must be specified.'} );
+  }
 
   if (!email || !password) {
     return res.status(422).send({ error: 'Email and password required'});
@@ -31,7 +43,10 @@ exports.signup = function(req, res, next) {
 
     const user = new User({
       email: email,
-      password: password
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+      role: role
     });
 
     user.save(function(err) {
@@ -39,7 +54,7 @@ exports.signup = function(req, res, next) {
         return next(err);
       }
 
-      res.json({ token: tokenForUser(user) });
+      res.json({ token: tokenForUser(user), userData: { id: user.id, firstName: user.firstName, email: user.email, role: user.role } });
     });
 
   });

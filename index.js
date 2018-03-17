@@ -8,7 +8,7 @@ const router = require('./router');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-mongoose.connect('mongodb://localhost:27017/auth');
+mongoose.connect('mongodb://localhost:27017/teamvue');
 
 app.use(morgan('combined'));
 app.use(cors());

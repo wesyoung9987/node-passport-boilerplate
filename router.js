@@ -1,4 +1,6 @@
 const Authentication = require('./controllers/authentication');
+const Lead = require('./controllers/lead');
+const Client = require('./controllers/client');
 const passportService = require('./services/passport');
 const passport = require('passport');
 
@@ -13,4 +15,9 @@ module.exports = function(app) {
   });
   app.post('/signin', requireSignin, Authentication.signin);
   app.post('/signup', Authentication.signup);
+  app.post('/get-lead-group-by-day', requireAuth, Lead.getLeadGroupByDay);
+  app.post('/save-lead-group', requireAuth, Lead.saveLeadGroup);
+  app.post('/save-pending-close', requireAuth, Lead.savePendingClose);
+  app.post('/save-client-close', requireAuth, Lead.saveClientClose);
+  app.post('/get-pending-user-clents', requireAuth, Client.getPendingUserClients);
 }
